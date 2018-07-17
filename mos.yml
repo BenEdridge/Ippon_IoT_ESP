@@ -1,0 +1,23 @@
+author: Ben Edridge
+description: Mongoose OS example with AWS IoT using MQTT and shadows
+# arch: PLATFORM
+version: 1.0
+manifest_version: 2017-05-18
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+config_schema:
+  - ["wifi.ap.enable", "false"]
+  - ["wifi.sta.enable", "true"]
+  - ["wifi.sta.ssid", "name"]
+  - ["wifi.sta.pass", "password"]
+  - ["wifi.sta.nameserver", "8.8.8.8"]
+  - ["mqtt.server", "xxx.iot.us-east-1.amazonaws.com:8883"]
+  - ["i2c.enable", true]
+
+tags:
+  - js
+
+filesystem:
+  - fs
