@@ -1,6 +1,5 @@
 author: Ben Edridge
-description: Mongoose OS example with AWS IoT using MQTT and shadows
-# arch: PLATFORM
+description: Mongoose OS example using AWS
 version: 1.0
 manifest_version: 2017-05-18
 libs_version: ${mos.version}
@@ -8,16 +7,29 @@ modules_version: ${mos.version}
 mongoose_os_version: ${mos.version}
 
 config_schema:
-  - ["wifi.ap.enable", "false"]
-  - ["wifi.sta.enable", "true"]
-  - ["wifi.sta.ssid", "name"]
+  - ["wifi.ap.enable", false]
+  - ["wifi.sta.enable", true]
+  - ["wifi.sta.ssid", "ssid"]
   - ["wifi.sta.pass", "password"]
   - ["wifi.sta.nameserver", "8.8.8.8"]
-  - ["mqtt.server", "xxx.iot.us-east-1.amazonaws.com:8883"]
-  - ["i2c.enable", true]
+  - ["aws.thing_name", "iot_thing"]
 
 tags:
   - js
+  - aws
 
 filesystem:
   - fs
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/dht
+  - origin: https://github.com/mongoose-os-libs/mjs
+  - origin: https://github.com/mongoose-os-libs/aws
+  - origin: https://github.com/mongoose-os-libs/shadow
+  - origin: https://github.com/mongoose-os-libs/sntp
+  - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/ca-bundle
+  - origin: https://github.com/mongoose-os-libs/core
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config
+  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
+  - origin: https://github.com/mongoose-os-libs/rpc-uart
