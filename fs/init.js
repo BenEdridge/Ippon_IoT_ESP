@@ -34,13 +34,7 @@ function getSensorData() {
   let h = dht.getHumidity();
 
   if (isNaN(h) || isNaN(t)) {
-    print('Failed to read data from sensor, using mock data');
-
-    return JSON.stringify({
-      device: deviceId,
-      temp: "20",
-      humidity: "80"
-    });
+    print('Failed to read data from sensor!');
   }
 
   return JSON.stringify({
@@ -65,7 +59,7 @@ function updateState(newSt) {
 // Timer for sending message to AWS with sensor data (outgoing)
 Timer.set(msToSendSensorData, Timer.REPEAT, function() {
   let message = getSensorData();
-  if(state.sendData){
+  if(state.sendData === true){
     let ok = MQTT.pub(sensorTopic, message, 1, false);
     print('Published:', ok ? 'yes' : 'no', 'topic:', sensorTopic, 'message:', message);
   } else {
@@ -75,7 +69,9 @@ Timer.set(msToSendSensorData, Timer.REPEAT, function() {
 
 
 Timer.set(1000 /* 1 sec */ , true /* repeat */ , function() {
-  GPIO.toggle(ledPin);
+  if(state.ledOn === true){
+    GPIO.toggle(ledPin);
+  }
 }, null);
 
 
@@ -86,7 +82,14 @@ MQTT.sub(settingsUpdateTopic, function(conn, settingsUpdateTopic, msg) {
 
   if(obj.sendData === false){
     print('Disabling Sensor data upload');
+    state.sendData = obj.sendData;
+    state.ledOn = obj.ledOn;
+  } else {
+    print('Enabling Sensor data upload');
+    state.sendData = obj.sendData;
+    state.ledOn = obj.ledOn;
   }
+  AWS.Shadow.update(0, state);
 }, null);
 
 // Shadow updates
